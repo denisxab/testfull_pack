@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "testfull_pack"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Denis Kustov"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 pytest = "^7.1.1"
-logsmal = "^0.0.7"
+logsmal = "^0.0.9"
 
 [tool.poetry.dev-dependencies]
 

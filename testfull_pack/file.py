@@ -8,7 +8,7 @@ from typing import Optional
 
 from logsmal import logger
 
-from basehash import BaseHash
+from .basehash import BaseHash
 
 
 def verify_authenticity_of_file(infile: str, hash_sum: str):
