@@ -61,7 +61,7 @@ class ReadTextFile(TextFile):
         self.__текст = None
 
     @property
-    def текст(self):
+    def text(self):
         # Записать данные в переменную из файла, только при первом обращении.
         if self.__текст is None:
             return self.read()
@@ -85,7 +85,7 @@ class RollingFile(ReadTextFile):
         if not self.существование:
             self.прошлые_данные_из_файла = ''
         else:
-            self.прошлые_данные_из_файла: str = self.текст
+            self.прошлые_данные_из_файла: str = self.text
 
     def rolling(self):
         if self.существование:
