@@ -9,6 +9,7 @@ from typing import Optional
 from logsmal import logger
 
 from .basehash import BaseHash
+from .helpful_test import diff_string
 
 
 def verify_authenticity_of_file(infile: str, hash_sum: str):
@@ -40,9 +41,17 @@ class TextFile:
         with open(self.full_path, "r", encoding='utf-8') as _f:
             return _f.read()
 
-    def update(self, text: str):
+    def append(self, text: str):
+        with open(self.full_path, "a", encoding='utf-8') as _f:
+            return _f.write(text)
+
+    def write(self, text: str):
         with open(self.full_path, "w", encoding='utf-8') as _f:
             return _f.write(text)
+
+    def diff_string(self, text: str):
+        """Разница между входного текста с тем что хранится в файле"""
+        return diff_string(self.read(), text)
 
 
 class ReadTextFile(TextFile):
@@ -58,14 +67,14 @@ class ReadTextFile(TextFile):
         :param hash_sum:
         """
         super().__init__(path, hash_sum)
-        self.__текст = None
+        self.__text = None
 
     @property
     def text(self):
-        # Записать данные в переменную из файла, только при первом обращении.
-        if self.__текст is None:
+        """Получить данные из файла, только при первом обращении"""
+        if self.__text is None:
             return self.read()
-        return self.__текст
+        return self.__text
 
 
 class RollingFile(ReadTextFile):
@@ -74,21 +83,21 @@ class RollingFile(ReadTextFile):
     Или удалить файл, если он не был создан, на момент создания класса.
 
 
-    with RollingFile():
+    with RollingFile('Путь','ХешСумма'):
         ...
     """
 
     def __init__(self, path: str, hash_sum: Optional[str]):
         super().__init__(path, hash_sum)
-        self.существование = exists(self.full_path)
+        self.existence = exists(self.full_path)
         # Если файл не существовал, то удаляем его при откате
-        if not self.существование:
+        if not self.existence:
             self.прошлые_данные_из_файла = ''
         else:
             self.прошлые_данные_из_файла: str = self.text
 
     def rolling(self):
-        if self.существование:
+        if self.existence:
             with open(self.full_path, 'w', encoding='utf-8') as _f:
                 _f.write(self.прошлые_данные_из_файла)
         else:
@@ -104,7 +113,7 @@ class RollingFile(ReadTextFile):
 def readAndSetEnv(*path_files: str):
     """
     Чтение переменных окружения из указанного файла,
-    и добавление их в ПО `python`
+    и добавление их в переменные окружения интерпретатора `python`
     """
     for _path_file in path_files:
         if exists(_path_file):

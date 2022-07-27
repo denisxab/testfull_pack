@@ -2,6 +2,9 @@ from hashlib import sha256
 
 
 class BaseHash:
+    """
+    Работа с хешем
+    """
 
     @staticmethod
     def file(path_file: str):
@@ -28,7 +31,7 @@ class BaseHash:
     @staticmethod
     def check_hash_sum(unknown_hash_sum: str, true_hash_sum: str):
         """
-        Сравить хеш суммы
+        Сравнить хеш суммы
 
         :param unknown_hash_sum: Полученная(неизвестная) хеш сумма
         :param true_hash_sum: Требуемая хеш сумма
